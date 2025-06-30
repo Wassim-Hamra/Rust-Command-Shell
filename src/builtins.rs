@@ -19,7 +19,6 @@ pub fn cd(new_path: &str) {
     }
     if new_path == "~" {
         // Change to home directory
-        
         if let Some(home) = env::var_os("HOME") {
             match env::set_current_dir(&home) {
                 Ok(_) => {
