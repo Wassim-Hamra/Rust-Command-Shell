@@ -6,6 +6,12 @@ pub fn echo(message: &str) {
     println!("{}", message);
 }
 
+pub fn pwd() {
+    let current_dir = env::current_dir().unwrap();
+    let pwd = current_dir.to_string_lossy();
+    println!("{}", pwd);
+}
+
 pub fn type_command(command: &str) -> String {
     if BUILTINS.contains(&command) {
         println!("{} is a shell builtin", command);
