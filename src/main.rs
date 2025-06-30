@@ -1,5 +1,6 @@
 mod builtins;
 
+use builtins::cd;
 use builtins::echo;
 use builtins::pwd;
 use builtins::type_command;
@@ -22,17 +23,28 @@ fn main() {
             break;
         }
         //echo command
-        else if input[0..=4].trim() == "echo" {
-            echo(input[4..].trim());
-
+        else if input.trim().starts_with("echo ") {
+            let echo_content = input.trim_start_matches("echo").trim();
+            echo(echo_content);
+        }
         //type command
-        } else if input[..=4].trim() == "type" {
-            let command = input[4..].trim();
-            type_command(command);
+        else if input.trim().starts_with("type ") {
+            let command_part = input.trim_start_matches("type").trim();
+            type_command(command_part);
         }
         //pwd command
         else if input.trim() == "pwd" {
             pwd();
+        }
+        // cd command
+        else if input.trim().starts_with("cd ") {
+            let new_path = input.trim_start_matches("cd").trim();
+            if new_path.is_empty() {
+                println!("cd: missing argument");
+                continue;
+            } else {
+                cd(new_path);
+            }
         }
         // Otherwise, search for the command in the PATH and execute it if it's found
         else {

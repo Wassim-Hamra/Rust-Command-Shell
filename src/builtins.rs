@@ -1,6 +1,6 @@
 use std::env;
 
-static BUILTINS: [&str; 3] = ["type", "echo", "exit"];
+static BUILTINS: [&str; 5] = ["type", "echo", "exit", "pwd", "cd"];
 
 pub fn echo(message: &str) {
     println!("{}", message);
@@ -10,6 +10,24 @@ pub fn pwd() {
     let current_dir = env::current_dir().unwrap();
     let pwd = current_dir.to_string_lossy();
     println!("{}", pwd);
+}
+
+pub fn cd(new_path: &str) {
+    if new_path.is_empty() {
+        println!("cd: missing argument");
+        return;
+    }
+
+    match env::set_current_dir(new_path) {
+        Ok(_) => {
+            let current_dir = env::current_dir().unwrap();
+            let pwd = current_dir.to_string_lossy();
+            println!("changed to {}", pwd);
+        }
+        Err(e) => {
+            println!("cd: {}: {}", new_path, e);
+        }
+    }
 }
 
 pub fn type_command(command: &str) -> String {
