@@ -12,41 +12,7 @@ pub fn pwd() {
     println!("{}", pwd);
 }
 
-pub fn cd(new_path: &str) {
-    if new_path.is_empty() {
-        println!("cd: missing argument");
-        return;
-    }
-    if new_path == "~" {
-        // Change to home directory
-        if let Some(home) = env::var_os("HOME") {
-            match env::set_current_dir(&home) {
-                Ok(_) => {
-                    let current_dir = env::current_dir().unwrap();
-                    let pwd = current_dir.to_string_lossy();
-                    println!("changed to {}", pwd);
-                }
-                Err(e) => {
-                    println!("cd: {}: {}", home.to_string_lossy(), e);
-                }
-            }
-            return;
-        } else {
-            println!("cd: HOME not set");
-            return;
-        }
-    }
-    match env::set_current_dir(new_path) {
-        Ok(_) => {
-            let current_dir = env::current_dir().unwrap();
-            let pwd = current_dir.to_string_lossy();
-            println!("changed to {}", pwd);
-        }
-        Err(e) => {
-            println!("cd: {}: {}", new_path, e);
-        }
-    }
-}
+
 
 pub fn type_command(command: &str) -> String {
     if BUILTINS.contains(&command) {
